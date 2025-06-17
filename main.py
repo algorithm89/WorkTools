@@ -45,5 +45,19 @@ def get_destination(destination_id):
     else:
         return jsonify({"error": "Destination not found"}), 404
 
+#POST
+
+@app.route('/destination', methods=['POST'])
+def add_destination():
+    data = request.get_json()
+
+    new_destination = Destination(destination=data['destination'],
+                                  country=data['country'],
+                                  rating=data['rating'])
+
+    db.session.add(new_destination)
+    db.session.commit()
+    return jsonify(new_destination.to_dict())
+
 if __name__ == '__main__':
     app.run(debug=True)
